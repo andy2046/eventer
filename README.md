@@ -8,3 +8,38 @@
 ----
 
 ## event emitter made easy
+
+## Install
+
+```
+go get github.com/andy2046/eventer
+```
+
+## Usage
+
+```go
+package main
+
+import (
+	"github.com/andy2046/eventer"
+)
+
+type MockEventListener struct{}
+
+func (m *MockEventListener) HandleEvent(e eventer.Event) {
+	println("HandleEvent", e)
+}
+
+type testEvent struct{}
+
+func main() {
+	l := &MockEventListener{}
+	emitter := &eventer.SyncEventEmitter{}
+	// emitter := &eventer.AsyncEventEmitter{}
+
+	emitter.AddListener(l)
+	defer emitter.RemoveListener(l)
+
+	emitter.EmitEvent(testEvent{})
+}
+```
